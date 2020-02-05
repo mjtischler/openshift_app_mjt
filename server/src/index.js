@@ -7,18 +7,20 @@ import auth from './auth.js';
 import io from 'socket.io-client';
 
 const app = express();
-const port = process.env.PORT || 5000;
 const environment = process.env.NODE_ENV || 'production';
+const port = environment === 'production' ? 8080 : 5000;
+const ioSocketPort = environment === 'production' ? 8081 : 5001;
+const ioSocketUrl = `http://localhost:${ioSocketPort}/`;
 
 const socketToken = jwt.sign({ id: auth.serverId, serverName: auth.serverName }, auth.socketTokenSecret);
-const ioSocket = io.connect("http://localhost:5001/", {
+const ioSocket = io.connect(ioSocketUrl, {
   reconnection: true,
   query: { token: socketToken }
 });
 
-ioSocket.on('Connect', () => {
+ioSocket.on('connect', () => {
   // eslint-disable-next-line no-console
-  console.log('Connected to socket on localhost:5001');
+  console.log(`Connected to socket at ${ioSocketUrl}`);
 });
 
 ioSocket.on('serverResponse', (data) => {

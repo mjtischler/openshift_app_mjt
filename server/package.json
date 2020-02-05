@@ -4,7 +4,7 @@
   "description": "A sample Node/React project for testing with OpenShift",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf dist/ && rimraf client/build && npm run --prefix ../client build && mkdir .\\dist\\client && cp -r ../client/build dist/client && babel ./src --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files && rimraf ../client/build",
+    "build": "rimraf dist/ && npm run --prefix ../client build && mkdirp dist/client && cp -r ../client/build dist/client && babel ./src --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files && rimraf ../client/build",
     "start": "npm run build && cross-env NODE_ENV=production node dist/index.js",
     "server": "cross-env NODE_ENV=development nodemon src/index.js --exec babel-node --presets babel-preset-env",
     "client": "cross-env NODE_ENV=development npm run --prefix ../client start",
@@ -27,9 +27,10 @@
   "dependencies": {
     "body-parser": "1.19.0",
     "jsonwebtoken": "8.5.1",
+    "mkdirp": "1.0.3",
     "morgan": "1.9.1",
     "password-hash": "1.2.2",
-    "socket.io": "^2.3.0"
+    "socket.io": "2.3.0"
   },
   "engines": {
     "node": ">=10.0.0"
