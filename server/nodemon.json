@@ -1,0 +1,11 @@
+{
+  "ignore": [
+    "../client/src/*",
+    "../client/public/*",
+    "../client/node_modules/*"
+  ],
+  "watch": [
+    "../client/build/*",
+    "src/*"
+  ]
+}
