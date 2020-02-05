@@ -9,7 +9,6 @@ import io from 'socket.io-client';
 const app = express();
 const port = process.env.PORT || 5000;
 const environment = process.env.NODE_ENV || 'production';
-let loggedIn = false;
 
 const socketToken = jwt.sign({ id: auth.serverId, serverName: auth.serverName }, auth.socketTokenSecret);
 const ioSocket = io.connect("http://localhost:5001/", {
@@ -31,8 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/logout', (req, res) => {
-  loggedIn = false;
-  res.status(200).json({loggedIn});
+  res.status(200).json({loggedIn: false});
 });
 
 app.post('/api/login', (req, res) => {
@@ -44,12 +42,11 @@ app.post('/api/login', (req, res) => {
     auth.password && passwordHash.verify(req.body.password, auth.password) &&
     auth.tokenSecret
   ) {
-    const token = jwt.sign({ id: auth.userId, username: auth.username }, auth.tokenSecret, { expiresIn: 30000 });
-    loggedIn = true;
+    const token = jwt.sign({ id: auth.userId, username: auth.username }, auth.tokenSecret, { expiresIn: 1800 });
     res.status(200).json({
       message: 'Login Successful!',
       token,
-      loggedIn
+      loggedIn: true
     });
   } else {
     res.status(200).json({
@@ -65,7 +62,7 @@ app.get('/api/data', (req, res) => {
     // eslint-disable-next-line no-unused-vars
     jwt.verify(req.headers.token, auth.tokenSecret, (err, decoded) => {
       if (err) {
-        res.status(401).json({data: 'Access Denied'});
+        res.status(401).json({data: 'Access Expired'});
       } else if (ioSocket && ioSocket.connected && auth && auth.userId) {
         ioSocket.emit('clientEvent', auth.userId, (message) => {
           res.status(200).json({data: message});
@@ -75,11 +72,6 @@ app.get('/api/data', (req, res) => {
       }
     });
   }
-});
-
-app.get('/api/logout', (req, res) => {
-  loggedIn = false;
-  res.status(200).json({loggedIn});
 });
 
 if (process.env.NODE_ENV === 'production') {
