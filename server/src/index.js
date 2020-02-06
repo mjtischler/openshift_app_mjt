@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import passwordHash from 'password-hash';
 import jwt from 'jsonwebtoken';
-import auth from './auth.js';
+import getAuthValues from './auth.js';
 import io from 'socket.io-client';
 
 const app = express();
@@ -13,6 +13,7 @@ const socketUrl = process.env.SOCKET_URL || 'http://localhost';
 const port = environment === 'production' ? 8080 : 5000;
 const ioSocketPort = 8081;
 const ioSocketUrl = `${socketUrl}:${ioSocketPort}`;
+const auth = getAuthValues(process.env || null);
 
 const socketToken = jwt.sign({ id: auth.serverId, serverName: auth.serverName }, auth.socketTokenSecret);
 const ioSocket = io.connect(ioSocketUrl, {
