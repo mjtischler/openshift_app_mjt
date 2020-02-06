@@ -9,7 +9,7 @@ ENV NODE_ENV=production
 # The route to the `openshift_app_api_mjt` app provided by OpenShift.
 # This can be found under Administrator -> Networking -> Services -> Location (e.g. http://171.31.61.172)
 # When deploying locally, point to the IP of the local docker socket image (e.g. http://172.0.1.2).
-# Comment to use localhost.
+# Comment to use localhost (i.e. non-Docker deployments)
 #ENV SOCKET_URL=
 
 # Bundle app source

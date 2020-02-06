@@ -85,9 +85,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(port, () => {
-  console.log(`App served on port ${port} in the ${environment} environment`)
-  console.log(`Socket.io url is defined as ${ioSocketUrl}`)
-  console.log(`${ioSocketUrl === 'http://localhost:8081' ? 'WARNING: Local Docker instances must point to the IP of the socket app rather than localhost (e.g. 172.0.1.3)' : ''}`)
+  console.log(`App served on port ${port} in the ${environment} environment`);
+  console.log(`Socket.io url is defined as ${ioSocketUrl}`);
+  console.log(`${ioSocketUrl === 'http://localhost:8081' ? 'WARNING: Local Docker instances must point to the IP of the socket app rather than localhost (e.g. 172.0.1.3) \n^^^If you\'re running outside of Docker you can ignore this warning.^^^' : ''}`);
 });
 
 export default app;
