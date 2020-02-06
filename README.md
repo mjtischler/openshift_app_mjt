@@ -35,14 +35,26 @@ docker images
 docker network ls
 
 # Run Docker Image (--network allows communication between images on the same host)
-docker run --network=bridge --name=app -it -d -p 49160:8080 -d ${your_name}/openshift_app_mjt
+docker run --network=bridge --name=app -it -d -p 8080:8080 -d ${your_name}/openshift_app_mjt
 
-# View Recent Docker Statuses (You can view your local instance at http:#localhost:49160/)
+# View Recent Docker Statuses (You can view your local instance at http://localhost:8080/)
 docker ps -a
+
+# Get IP addresses of all images on the network bridge. Useful for local deploys.
+docker network inspect bridge # Look for the `Containers` object
 
 # Start Bash Terminal in Docker Instance
 docker run -it --entrypoint /bin/bash ${your_name}/openshift_app_mjt -s
+
+# Clean up images
+docker system prune # WARNING: Append with -a to delete all non-running images
+
+# Tag an image and push it to your Docker repo
+# NOTE: Required before deploying to OpenShift
+docker tag ${your_name}/openshift_app_mjt:${tag} ${your_docker_repo}:${tag}
+docker push ${your_docker_repo}/openshift_app_mjt:${tag}
 ```
+
 
 
 
