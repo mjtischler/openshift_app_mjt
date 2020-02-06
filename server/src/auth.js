@@ -4,7 +4,7 @@
 const auth = {
   userId: process.env.USER_ID || '', // Any UUID will do
   username: process.env.USER_NAME || '', // User name for logging in from the client app
-  password: process.env.PASSWORD || '', // Add hashed password here
+  password: process.env.USER_PW || '', // Add hashed password here
   tokenSecret: process.env.TOKEN_SECRET || '', // Add JWT secret token string here
   serverId: process.env.SERVER_ID || '', // Any UUID will do
   serverName: process.env.SERVER_NAME || '', // Used for signing the JWT for validating via the socket
