@@ -6,6 +6,7 @@
   "scripts": {
     "build": "rimraf dist/ && npm run --prefix ../client build && mkdirp dist/client && cp -r ../client/build dist/client && babel ./src --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files && rimraf ../client/build",
     "start": "npm run build && cross-env NODE_ENV=production node dist/index.js",
+    "docker": "node dist/index.js",
     "server": "cross-env NODE_ENV=development nodemon src/index.js --exec babel-node --presets babel-preset-env",
     "client": "cross-env NODE_ENV=development npm run --prefix ../client start",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
@@ -34,5 +35,9 @@
   },
   "engines": {
     "node": ">=10.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mjtischler/openshift_app_mjt.git"
   }
 }

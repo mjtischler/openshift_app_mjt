@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
@@ -8,9 +9,10 @@ import io from 'socket.io-client';
 
 const app = express();
 const environment = process.env.NODE_ENV || 'production';
+const socketUrl = process.env.SOCKET_URL || 'http://localhost';
 const port = environment === 'production' ? 8080 : 5000;
-const ioSocketPort = environment === 'production' ? 8081 : 5001;
-const ioSocketUrl = `http://localhost:${ioSocketPort}/`;
+const ioSocketPort = 8081;
+const ioSocketUrl = `${socketUrl}:${ioSocketPort}`;
 
 const socketToken = jwt.sign({ id: auth.serverId, serverName: auth.serverName }, auth.socketTokenSecret);
 const ioSocket = io.connect(ioSocketUrl, {
@@ -19,12 +21,10 @@ const ioSocket = io.connect(ioSocketUrl, {
 });
 
 ioSocket.on('connect', () => {
-  // eslint-disable-next-line no-console
   console.log(`Connected to socket at ${ioSocketUrl}`);
 });
 
 ioSocket.on('serverResponse', (data) => {
-  // eslint-disable-next-line no-console
   console.log('Received an event:', data);
 });
 
@@ -84,7 +84,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// eslint-disable-next-line no-console
-app.listen(port, () => console.log(`App served on port ${port} in the ${environment} environment`));
+app.listen(port, () => {
+  console.log(`App served on port ${port} in the ${environment} environment`)
+  console.log(`Socket.io url is defined as ${ioSocketUrl}`)
+  console.log(`${ioSocketUrl === 'http://localhost:8081' ? 'WARNING: Local Docker instances must point to the IP of the socket app rather than localhost (e.g. 172.0.1.3)' : ''}`)
+});
 
 export default app;
