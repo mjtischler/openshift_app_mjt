@@ -9,9 +9,9 @@ import io from 'socket.io-client';
 
 const app = express();
 const environment = process.env.NODE_ENV || 'production';
-const socketUrl = process.env.SOCKET_URL || 'http://localhost';
+const socketUrl = process.env.COMPONENT_BACKEND_HOST || 'http://localhost';
 const port = environment === 'production' ? 8080 : 5000;
-const ioSocketPort = 8081;
+const ioSocketPort = process.env.COMPONENT_BACKEND_PORT || 8081;
 const ioSocketUrl = `${socketUrl}:${ioSocketPort}`;
 const auth = getAuthValues(process.env || null);
 
@@ -22,11 +22,15 @@ const ioSocket = io.connect(ioSocketUrl, {
 });
 
 ioSocket.on('connect', () => {
-  console.log(`Connected to socket at ${ioSocketUrl}`);
+  console.log(`Connected to socket [ioSocketUrl=${ioSocketUrl}]`);
 });
 
 ioSocket.on('serverResponse', (data) => {
-  console.log('Received an event:', data);
+  console.log(`Received an event [data=${data}]`);
+});
+
+ioSocket.on('error', (err) => {
+  console.log(`Socket error: ${err}`);
 });
 
 app.use(bodyParser.json());
@@ -86,9 +90,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(port, () => {
-  console.log(`App served on port ${port} in the ${environment} environment`);
+  console.log(`App running [port=${port}] [environment=${environment}]`);
   console.log(`Socket.io url is defined as ${ioSocketUrl}`);
-  console.log(`${ioSocketUrl === 'http://localhost:8081' ? 'WARNING: Local Docker instances must point to the IP of the socket app rather than localhost (e.g. 172.0.1.3) \n^^^If you\'re running outside of Docker you can ignore this warning.^^^' : ''}`);
+  console.log(`${socketUrl === 'http://localhost' ? 'WARNING: Local Docker instances must point to the IP of the socket app rather than localhost (e.g. 172.0.1.3) \n^^^If you\'re running outside of Docker you can ignore this warning.^^^' : ''}`);
 });
 
 export default app;

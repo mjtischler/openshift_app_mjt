@@ -28,10 +28,11 @@ COPY --from=builder tmp/ .
 ENV SKIP_PREFLIGHT_CHECK=true \
     NODE_ENV=production
     # The route to the `openshift_app_api_mjt` app provided by OpenShift.
-    # This can be found under Administrator -> Networking -> Services -> Location (e.g. http://171.31.61.172)
+    # This is automatically set by linking the parallel applications.
     # When deploying locally, point to the IP of the local docker socket image (e.g. http://172.0.1.2).
     # Comment to use localhost (i.e. non-Docker deployments)
-    # SOCKET_URL=
+    # COMPONENT_BACKEND_HOST=
+    # COMPONENT_BACKEND_PORT=
 
 USER 9000
 EXPOSE 8080
