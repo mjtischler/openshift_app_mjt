@@ -1,9 +1,9 @@
 # openshift_app_mjt
--------------------
+
 This is a sample Node/React/Redux/Socket.io app used for creating Docker containers and deploying them with OpenShift. While not required, it connects via socket to [openshift_app_api_mjt](https://github.com/mjtischler/openshift_app_api_mjt).
 
 ## Installation
----------------
+
 You need both [Node 10+](https://nodejs.org/en/download/) and [Docker 19+](https://docs.docker.com/install/) installed on your machine to run this locally. Run `npm install` from both the `/client` and `/server` directories, then from `/server`:
 
 ```bash
@@ -17,7 +17,7 @@ npm start
 ```
 
 ## Authorization
-----------------
+
 Access controls are stored in [/server/src/auth.js](https://github.com/mjtischler/openshift_app_mjt/blob/develop/server/src/auth.js), and they will need to be defined before running the app or creating a Docker image.
 
 **NOTE**: This is a poor way of handling authorization and should only be used for testing/learning.
@@ -25,6 +25,7 @@ Access controls are stored in [/server/src/auth.js](https://github.com/mjtischle
 Alternatively, you can create a parallel repo and store this auth data in `process.env` by defining each key in the Dockerfile or as secrets (see *Environmental Variables* below). Again, these are to be used only for testing. For easier management, you can add [dotenv](https://github.com/motdotla/dotenv#readme) to project.
 
 ## Environmental Variables
+
 ```
 NODE_ENV                # Defaults to production
 COMPONENT_BACKEND_HOST  # The socket machine's IP address. *Optional, defaults to localhost*
@@ -42,7 +43,7 @@ SERVER_NAME   # Used for signing the JWT for validating to the socket
 ```
 
 ## Docker Commands
-------------------
+
 ```bash
 # Build the Docker image
 docker build -t ${your_name}/openshift_app_mjt .
