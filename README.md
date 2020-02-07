@@ -22,7 +22,24 @@ Access controls are stored in [/server/src/auth.js](https://github.com/mjtischle
 
 **NOTE**: This is a poor way of handling authorization and should only be used for testing/learning.
 
-Alternatively, you can create a parallel repo and store this auth data in `process.env` by defining each key in the Dockerfile. Again, this is to be used only for testing.
+Alternatively, you can create a parallel repo and store this auth data in `process.env` by defining each key in the Dockerfile or as secrets (see *Environmental Variables* below). Again, these are to be used only for testing. For easier management, you can add [dotenv](https://github.com/motdotla/dotenv#readme) to project.
+
+## Environmental Variables
+```
+NODE_ENV                # Defaults to production
+COMPONENT_BACKEND_HOST  # The socket machine's IP address. *Optional, defaults to localhost*
+COMPONENT_BACKEND_PORT  # The socket machine's IP address. *Required, defaults to 8081*
+SOCKET_TOKEN_SECRET     # The string used to validate the socket connection to the API
+
+
+# These can be stored either in `process.env` or in `server\src\auth.js`
+USER_ID       # Any UUID
+USER_NAME     # User name for logging in from the client app
+USER_PW       # Hashed password
+TOKEN_SECRET  # Client-server JWT token secret
+SERVER_ID     # Any UUID
+SERVER_NAME   # Used for signing the JWT for validating to the socket
+```
 
 ## Docker Commands
 ------------------
